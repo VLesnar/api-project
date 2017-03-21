@@ -1,0 +1,26 @@
+{
+  "name": "api-project",
+  "version": "1.0.0",
+  "description": "Project for Rich Media II",
+  "main": "server.js",
+  "scripts": {
+    "start": "node ./src/server.js",
+    "pretest": "eslint ./src --fix",
+    "test": "echo \"Tests complete\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VLesnar/api-project.git"
+  },
+  "author": "Veronica Lesnar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VLesnar/api-project/issues"
+  },
+  "homepage": "https://github.com/VLesnar/api-project#readme",
+  "devDependencies": {
+    "eslint": "^3.18.0",
+    "eslint-config-airbnb": "^14.1.0",
+    "eslint-plugin-import": "^2.2.0"
+  }
+}
