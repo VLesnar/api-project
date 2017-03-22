@@ -26,7 +26,9 @@ const respondJSONMeta = (request, response, status) => {
   response.end();
 };
 
+// Adds the note to the notesboard under the initial note
 const addNote = (request, response, body) => {
+  // If there is no input in the note form
   const responseJSON = {
     message: 'Text input is required',
   };
@@ -38,6 +40,7 @@ const addNote = (request, response, body) => {
 
   let responseCode = 201;
 
+  // Nothing has changed from the note
   if (notes[body.text]) {
     responseCode = 204;
   } else {
@@ -49,6 +52,7 @@ const addNote = (request, response, body) => {
   etag = crypto.createHash('sha1').update(JSON.stringify(notes));
   digest = etag.digest('hex');
 
+  // Note successfully created, all notes can get accessed with /getNotes in URL
   if (responseCode === 201) {
     responseJSON.message = 'Note created';
     return respondJSON(request, response, responseCode, responseJSON);
@@ -57,6 +61,7 @@ const addNote = (request, response, body) => {
   return respondJSONMeta(request, response, responseCode);
 };
 
+// Gets all notes that users have put in
 const getNotes = (request, response) => {
   const responseJSON = {
     notes,
@@ -77,6 +82,7 @@ const getNotesMeta = (request, response) => {
   return respondJSONMeta(request, response, 200);
 };
 
+// Updates the note
 const updateNote = (request, response) => {
   const newNote = {
     createdAt: Date.now(),

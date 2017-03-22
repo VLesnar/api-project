@@ -18,6 +18,8 @@ const getStyle = (request, response) => {
   respond(request, response, style, 'text/css');
 };
 
+// Additional function to get the background for the site
+// Background image created by me, Veronica Lesnar
 const getBackground = (request, response) => {
   respond(request, response, background, 'image/png');
 };

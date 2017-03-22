@@ -7,22 +7,27 @@
   <script type="text/babel">
     const parseJSON = (xhr, content, parseResponse, text) => { 
       console.dir(content);
+      
+      // When a note is created, add that note to the page
       if(xhr.status === 201) {
         const div = document.createElement('div');
         div.setAttribute('class', 'note');
         
+        // Creates the note
         const form = document.createElement('form');
         form.setAttribute('class', 'noteForm');
         form.setAttribute('action', '/addNote');
         form.setAttribute('method', 'post');
         form.setAttribute('autocomplete', 'off');
         
+        // Creates the textField
         const input1 = document.createElement('input');
         input1.setAttribute('class', 'textField');
         input1.setAttribute('type', 'text');
         input1.setAttribute('name', 'text');
         input1.value = text;
         
+        // Creates the save button
         const input2 = document.createElement('input');
         input2.setAttribute('class', 'save');
         input2.setAttribute('type', 'submit');
@@ -52,6 +57,7 @@
       let textField = document.querySelector('.textField');
       textField.value = "";
       
+      // Updates user on page if another status code is thrown
       switch(xhr.status) {
         case 204:
           content.innerHTML = `<b>Updated (No Content)</b>`;
@@ -88,6 +94,7 @@
       const textField = form.querySelector('.textField');
       const formData = `text=${textField.value}`;
       
+      // Adds an additional string to be used down the pipe for the new note
       xhr.onload = () => handleResponse(xhr, true, textField.value);
       
       xhr.send(formData);
