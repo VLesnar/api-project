@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Notes 'N Stuff</title>
+  <link rel="stylesheet" type="text/css" href="/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
+  <script type="text/babel">
+    const parseJSON = (xhr, content, parseResponse, text) => { 
+      console.dir(content);
+      if(xhr.status === 201) {
+        const div = document.createElement('div');
+        div.setAttribute('class', 'note');
+        
+        const form = document.createElement('form');
+        form.setAttribute('class', 'noteForm');
+        form.setAttribute('action', '/addNote');
+        form.setAttribute('method', 'post');
+        form.setAttribute('autocomplete', 'off');
+        
+        const input1 = document.createElement('input');
+        input1.setAttribute('class', 'textField');
+        input1.setAttribute('type', 'text');
+        input1.setAttribute('name', 'text');
+        input1.value = text;
+        
+        const input2 = document.createElement('input');
+        input2.setAttribute('class', 'save');
+        input2.setAttribute('type', 'submit');
+        input2.setAttribute('value', 'Save');
+        
+        content.appendChild(div);
+        div.appendChild(form);
+        form.appendChild(input1);
+        form.appendChild(input2);
+            
+        const addNote = (e) => requestUpdate(e, form);      
+        form.addEventListener('submit', addNote);
+      } else {
+        const obj = JSON.parse(xhr.response);
+        const p = document.createElement('p');
+        console.dir(obj);
+        if(obj.text) {
+          p.textContent = `Message: ${obj.text}`;
+          content.appendChild(p);
+        }
+      }   
+    };
+
+    const handleResponse = (xhr, parseResponse, text) => {
+      let content = document.querySelector('#notesBoard');
+      console.log(xhr.status);
+      let textField = document.querySelector('.textField');
+      textField.value = "";
+      
+      switch(xhr.status) {
+        case 204:
+          content.innerHTML = `<b>Updated (No Content)</b>`;
+          parseResponse = false;
+          break;
+        case 304:
+          content.innerHTML = `<b>Not Modified</b>`;
+          parseResponse = false;
+          break;
+        case 400:
+          content.innerHTML = `<b>Bad Request</b>`;
+          break;
+        case 404:
+          content.innerHTML = `<b>Resource Not Found</b>`
+          break;
+        default:
+          break;
+      }
+      
+      parseJSON(xhr, content, parseResponse, text);
+    };
+
+    const requestUpdate = (e, form) => {
+      let action = form.getAttribute('action');
+      let method = form.getAttribute('method');
+      
+      const xhr = new XMLHttpRequest();
+      
+      xhr.open(method, action);
+      
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      xhr.setRequestHeader('Accept', 'application/json');
+      
+      const textField = form.querySelector('.textField');
+      const formData = `text=${textField.value}`;
+      
+      xhr.onload = () => handleResponse(xhr, true, textField.value);
+      
+      xhr.send(formData);
+      e.preventDefault();
+      return false;
+    };
+
+    const init = () => {
+      const noteForm = document.querySelector('.noteForm');
+      
+      const addNote = (e) => requestUpdate(e, noteForm);
+      
+      noteForm.addEventListener('submit', addNote);
+    };
+
+    window.onload = init;
+  </script>
+</head>
+<body>
+  <div id="header">
+    <h2>Notes 'N Stuff</h2>
+  </div>
+  <div class="note">
+    <form class="noteForm" action="/addNote" method="post">
+      <input type="text" class="textField" placeholder="Type here" name="text" autocomplete="off" />
+      <input class="save" type="submit" value="Save" />
+    </form>
+  </div>
+  <div id="notesBoard">
+  </div>
+</body>
+</html>

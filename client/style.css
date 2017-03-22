@@ -1,0 +1,32 @@
+body {
+  background-image: url("background.png");
+  color: rgb(229, 229, 229);
+  text-align: center;
+}
+
+.note {
+  background-color: rgb(28, 28, 28);
+  box-shadow: 5px 5px 20px rgb(0, 0, 0);
+  padding: 20px;
+  width: 200px;
+  height: 200px;
+  border-radius: 4px;
+  margin: 5px auto;
+}
+
+.textField {
+  width: 200px;
+  height: 180px;
+  border-radius: 2px;
+  background-color: rgb(229, 229, 229);
+  resize: none;
+}
+
+button {
+  border-radius: 2px;
+}
+
+.save {
+  width: 204px;
+  margin-top: 5px;
+}
